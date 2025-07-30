@@ -68,9 +68,7 @@ demo-stack/
 
 How to Use
 1. Clone and Build
-bash
-Copy
-Edit
+
 git clone https://github.com/your-org/ai-prometheus-stack.git
 cd ai-prometheus-stack
 docker compose up --build
@@ -84,9 +82,7 @@ AI API: http://localhost:8080/analyze
 3. Example AI Query
 To analyze anomalies in Prometheus's own availability:
 
-bash
-Copy
-Edit
+
 curl "http://localhost:8080/analyze?prometheus_url=http://prometheus:9090&query=up"
 📊 Grafana Configuration
 Grafana is automatically preconfigured with:
