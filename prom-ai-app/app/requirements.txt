@@ -1,0 +1,6 @@
+fastapi
+uvicorn
+pandas
+prometheus-api-client
+tensorflow
+scikit-learn
