@@ -1,136 +1,99 @@
-# AI-Driven Observability Stack with Prometheus and Grafana
+This project is an end-to-end observability solution that uses Prometheus to collect metrics, Python-based AI models to detect anomalies, and a React-based frontend with Grafana for visualization. The AI uses Isolation Forest to identify anomalies in time-series data collected from Prometheus.
 
-This project demonstrates an end-to-end AI-powered observability platform built using Docker Compose. It includes:
+🧱 Components
+Prometheus: Time-series metric collection
 
-- **Prometheus** for metrics collection
-- **Node Exporter** to gather system-level metrics
-- **Blackbox Exporter** to monitor external HTTP endpoints (e.g., social media latency)
-- **Grafana** for visualization
-- **AI Metrics Analyzer**: a FastAPI app using an Autoencoder neural network (TensorFlow/Keras) to detect anomalies in Prometheus metrics
+AI Backend (FastAPI + Scikit-learn): Anomaly detection using Isolation Forest
 
----
+Grafana: Visualize metrics and anomalies
 
-## 🚀 Features
+Frontend (React): UI to input Prometheus URL and query and trigger analysis
 
-- Scrapes and stores system metrics using Prometheus
-- Probes uptime and latency of top 10 social media websites using Blackbox Exporter
-- Visualizes metrics via Grafana dashboards
-- Detects anomalies in any Prometheus metric using an AI Autoencoder model
-- Simple REST API to trigger AI-based analysis
+🚀 Installation Steps
+1. Clone the Repository
 
----
+git clone https://github.com/your-org/ai-observability-stack.git
+cd ai-observability-stack
+2. Launch the Full Stack with Docker Compose
 
-## 📦 Stack Components
+docker-compose up --build
+This will spin up:
 
-| Service         | Description                           | Port |
-|----------------|---------------------------------------|------|
-| Prometheus      | Time-series DB and scraper            | 9090 |
-| Node Exporter   | Collects host-level metrics           | 9100 |
-| Blackbox Exporter | Monitors HTTP endpoints            | 9115 |
-| AI Analyzer App | Detects anomalies in metrics (FastAPI + TensorFlow) | 8080 |
-| Grafana         | Dashboards and visualization          | 3000 |
+Prometheus on http://localhost:9090
 
----
+FastAPI AI backend on http://localhost:8000
 
-## 🧠 AI Analyzer: How It Works
+Grafana on http://localhost:3000
 
-- Pulls historical time-series data from Prometheus using HTTP API
-- Normalizes the data and trains an **Autoencoder neural net**
-- Calculates reconstruction error to flag anomalies
-- Returns JSON with:
-  - Summary stats
-  - Anomaly count
-  - Recent anomalous points
+React UI on http://localhost:5173 (Vite dev) or via http://localhost if built and served via NGINX
 
----
+⚙️ Configuration
+Prometheus is preconfigured via prometheus.yml
 
-## 📂 Project Structure
+The FastAPI backend supports /analyze?prometheus_url=<>&query=<>
 
-```text
-demo-stack/
+The frontend allows users to provide any Prometheus URL and PromQL query dynamically
+
+📈 Usage
+Visit the React frontend at:
+http://localhost:5173
+
+Enter:
+
+Prometheus URL (e.g., http://localhost:9090)
+
+PromQL Query (e.g., up, node_cpu_seconds_total)
+
+Click Analyze.
+
+The backend fetches data from Prometheus, runs anomaly detection, and returns a list of outliers.
+
+View the results and explore dashboards via Grafana:
+http://localhost:3000
+
+📦 Project Structure
+
+.
+├── backend/                 # FastAPI + AI model
+├── frontend/                # React UI (Vite)
+├── prometheus/              # Prometheus config
 ├── docker-compose.yml
-├── prometheus/
-│   └── prometheus.yml
-├── blackbox/
-│   └── blackbox.yml
-├── grafana/
-│   └── provisioning/
-│       └── datasources/
-│           └── datasource.yml
-├── ai-metrics-app/
-│   ├── Dockerfile
-│   ├── requirements.txt
-│   └── app/
-│       ├── main.py
-│       ├── model.py
-│       └── prometheus_utils.py
+├── README.md
+🧪 Example Query
+
+Prometheus URL: http://localhost:9090
+PromQL Query: rate(http_requests_total[5m])
+Returns a JSON response with:
+
+Original metric values
+
+Predicted anomaly labels
+
+Timestamps of anomaly events
+
+🛠️ Build Frontend Separately
+If you'd like to build and serve the frontend manually:
 
 
-How to Use
-1. Clone and Build
-
-git clone https://github.com/your-org/ai-prometheus-stack.git
-cd ai-prometheus-stack
-docker compose up --build
-2. Access the Services
-Grafana: http://localhost:3000 (admin / admin)
-
-Prometheus: http://localhost:9090
-
-AI API: http://localhost:8080/analyze
-
-3. Example AI Query
-To analyze anomalies in Prometheus's own availability:
+cd frontend
+npm install
+npm run dev     # For dev mode
+npm run build   # For production build
+To serve it with NGINX in Docker:
 
 
-curl "http://localhost:8080/analyze?prometheus_url=http://prometheus:9090&query=up"
-📊 Grafana Configuration
-Grafana is automatically preconfigured with:
+docker build -t promai-frontend .
+docker run -p 80:80 promai-frontend
+🧠 Tech Stack
+Prometheus
 
-Prometheus as the default data source
+Grafana
 
-Create new dashboards to visualize:
+Python (FastAPI, Scikit-learn, Pandas)
 
-Node Exporter system metrics
+React + Vite
 
-Blackbox probe latency
+Docker + Docker Compose
 
-(Optional) Custom annotations from the AI app
-
-🔮 Future Enhancements
-Push anomaly results back to Prometheus
-
-Add alerting based on anomaly counts
-
-Integrate LSTM or Prophet for predictive forecasting
-
-Host the AI app as a microservice (e.g., ECS or Azure App Service)
-
-🧪 Social Media Sites Monitored
-Via Blackbox Exporter:
-
-Twitter
-
-Facebook
-
-Instagram
-
-LinkedIn
-
-YouTube
-
-Pinterest
-
-TikTok
-
-Reddit
-
-Snapchat
-
-Threads
-
-📄 License
-MIT License
-
-🙋‍♀️ Questions?
-Raise an issue or contact the maintainer at your.email@domain.com.
+📬 Feedback or Contributions?
+Pull requests and issues are welcome!
