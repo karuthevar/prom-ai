@@ -12,9 +12,11 @@ Frontend (React): UI to input Prometheus URL and query and trigger analysis
 🚀 Installation Steps
 1. Clone the Repository
 
+
 git clone https://github.com/your-org/ai-observability-stack.git
 cd ai-observability-stack
 2. Launch the Full Stack with Docker Compose
+
 
 docker-compose up --build
 This will spin up:
@@ -53,6 +55,7 @@ http://localhost:3000
 
 📦 Project Structure
 
+
 .
 ├── backend/                 # FastAPI + AI model
 ├── frontend/                # React UI (Vite)
@@ -60,7 +63,9 @@ http://localhost:3000
 ├── docker-compose.yml
 ├── README.md
 🧪 Example Query
-
+yaml
+Copy
+Edit
 Prometheus URL: http://localhost:9090
 PromQL Query: rate(http_requests_total[5m])
 Returns a JSON response with:
@@ -75,6 +80,7 @@ Timestamps of anomaly events
 If you'd like to build and serve the frontend manually:
 
 
+t
 cd frontend
 npm install
 npm run dev     # For dev mode
