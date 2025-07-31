@@ -1,24 +1,23 @@
-# Use official Node.js image as base
-FROM node:18
+# frontend/Dockerfile
 
-# Set working directory
+FROM node:20-alpine
+
 WORKDIR /app
 
 # Copy package.json and install dependencies
 COPY package*.json ./
 RUN npm install
 
-# Copy source files
+# Install Tailwind and init config
+RUN npm install -D tailwindcss postcss autoprefixer && \
+    npx tailwindcss init -p
+
+# Copy rest of the application
 COPY . .
 
-# Build the app
+# Build the frontend using Vite
 RUN npm run build
 
-# Use an nginx container to serve the static files
-FROM nginx:alpine
-COPY --from=0 /app/dist /usr/share/nginx/html
-
-# Expose port 80
-EXPOSE 80
-
-CMD ["nginx", "-g", "daemon off;"]
+# Start app using dev server (for demo)
+EXPOSE 5173
+CMD ["npm", "run", "dev"]
